@@ -16,6 +16,14 @@
 
 ---
 
+## [1.3.0] - 2026-08-09 (shqkel/harness 포크)
+
+### Added
+- **스펙 추적 규격 내장** — 신규 하네스 생성 시 `.{하네스명}/specs/` 실행 이력 관리(스펙 문서·index 대장·시작/최종 보고 Phase 훅)를 자동 포함 (SKILL.md §5-6, §6-1 검증 항목, `references/spec-tracking.md` 신규)
+
+### Changed
+- **내부 산출물 폴더 관례 `_workspace/` → `.<하네스명>/`** — 하네스별 hidden 폴더로 전환해 여러 하네스가 한 작업 디렉토리에서 충돌 없이 공존 (SKILL.md, orchestrator-template, skill-testing-guide, team-examples, agent-design-patterns)
+
 ## [1.2.1] - 2026-04-18
 
 ### Fixed
