@@ -16,6 +16,11 @@
 
 ---
 
+## [1.3.1] - 2026-08-09
+
+### Docs
+- `references/spec-tracking.md`에 "Spec Kit 단계 대응"(constitution~converge ↔ 하네스 Phase 분담표)과 "게이트 규칙"(Draft 합의·Superseded 사전 확인) 추가 — 스펙과 파이프라인의 역할 경계 명문화
+
 ## [1.3.0] - 2026-08-09 (shqkel/harness 포크)
 
 ### Added
