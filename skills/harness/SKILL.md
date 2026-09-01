@@ -303,8 +303,8 @@ Phase마다 다른 모드를 섞어 구성한다. 자주 쓰이는 조합:
 
 하네스는 여러 번 실행되므로, 실행 이력을 스펙 문서로 추적하는 규격을 **모든 신규 하네스에 내장**한다:
 
-1. 내부 산출물 폴더에 `.{하네스명}/specs/` 규격 채택 (index.md 대장 + `NNN-slug/spec.md`) — `references/spec-tracking.md`를 새 하네스 스킬의 `references/`로 복사
-2. 오케스트레이터의 시작 Phase에 "스펙 개설/귀속" 훅, 최종 보고 Phase에 "완료 기록 → Done → index 갱신" 훅
+1. **프로젝트 폴더 최상위 `specs/`** 규격 채택 (index.md 대장 + `NNN-slug/spec.md`) — 하네스 하위(`.{하네스명}/specs/`)에 두지 않는다. 한 프로젝트 폴더는 하네스를 여럿 쓰므로 대장·번호 수열은 **프로젝트당 하나**이며, 하네스 구분은 대장의 「하네스」 컬럼이 맡는다. 이미 `specs/`가 있으면 **다음 번호를 이어 쓴다**. `references/spec-tracking.md`를 새 하네스 스킬의 `references/`로 복사
+2. 오케스트레이터의 시작 Phase에 "스펙 개설/귀속" 훅, 최종 보고 Phase에 "완료 기록 → Done → index 갱신" 훅 — `references/orchestrator-template.md`의 템플릿 A·B·C에 이미 들어 있다. **지우지 말고** 그 하네스의 Phase 이름에 맞춰 옮겨 적는다
 3. 스킬 공통 규칙에 "스펙은 내부 산출물 — 최종 산출물에 스펙 번호 노출 금지"
 
 기존 하네스는 일괄 소급하지 않는다 — 다음 실제 사용 시점에 그 작업을 스펙 001로 열면서 심는다. 규격 상세와 템플릿은 `references/spec-tracking.md` 참조.
@@ -319,7 +319,7 @@ Phase마다 다른 모드를 섞어 구성한다. 자주 쓰이는 조합:
 - 스킬의 frontmatter(name, description) 검증
 - 에이전트 간 참조 일관성 확인
 - 커맨드가 생성되지 않았는지 확인
-- 스펙 추적 내장 확인 — 스킬 `references/spec-tracking.md` 사본 + 시작/최종 보고 Phase 훅 (5-6)
+- 스펙 추적 내장 확인 — 스킬 `references/spec-tracking.md` 사본 + 시작/최종 보고 Phase 훅 + 스펙 경로가 프로젝트 폴더 최상위 `specs/`인지 (5-6)
 
 #### 6-2. 실행 모드별 검증
 
