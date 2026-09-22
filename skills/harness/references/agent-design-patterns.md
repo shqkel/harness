@@ -214,6 +214,8 @@ Phase별로 다른 전문가 조합이 필요하면, 이전 팀의 산출물을 
 
 ## 에이전트 정의 구조
 
+파일명과 frontmatter `name`은 `{harness}-{role}` 규칙을 따른다 (SKILL.md §2-4). 접두사가 없으면 여러 하네스가 한 `.claude/agents/`를 공유할 때 이름이 충돌한다.
+
 ```markdown
 ---
 name: agent-name

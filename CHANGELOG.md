@@ -6,6 +6,24 @@
 
 ---
 
+## [1.4.0] - 2026-09-22
+
+### Added
+- **명명 규칙 신설 (§2-4)** — 에이전트 `{harness}-{role}.md`, 스킬 `{harness}.{action}/SKILL.md`, frontmatter `name`도 동일 패턴. `.claude/agents/`·`.claude/skills/`는 한 프로젝트의 모든 하네스가 공유하는 네임스페이스인데 규칙이 어디에도 없어, 접두사 누락(`equipment-planner`)·접두사 약어(`cs-writer`)·소문자 `skill.md`가 누적되고 있었다. 스킬 정의 파일명은 대문자 `SKILL.md`로 고정 — 대소문자 무시 파일시스템에서만 통과하던 소문자 이름은 배포 시점에 드러나는 결함이다. 기존 하네스는 일괄 소급하지 않고 다음에 손대는 시점에 맞춘다 (SKILL.md §2-4·§3·§4·§6-1·체크리스트, `references/skill-writing-guide.md`, `references/agent-design-patterns.md`)
+- **스펙 우선 — 하네스 구축 자체에 적용 (§0-1)** — 종전 §5-6은 "생성되는 하네스에 스펙 추적을 심어라"였을 뿐, 메타스킬 자신의 구축·수정 작업에는 스펙이 없었다. Phase 0에 스펙 개설/귀속 훅을 넣고, 위치(`$HARNESS_ROOT/specs/` 또는 `{프로젝트}/specs/`)·게이트(신규 구축·아키텍처 변경은 Draft로 합의 후 In Progress)·닫기(Phase 6 통과 후 Done)를 정했다. CLAUDE.md 변경 이력은 *무엇이 바뀌었나*만 남기고 *무엇을 안 하기로 했나*는 남기지 않는다 (SKILL.md §0-1·체크리스트)
+
+### Changed
+- **§5-4 CLAUDE.md 포인터를 두 자리로 분리** — (a) 하네스 홈 `{harness}/CLAUDE.md`는 구축 시 1회, (b) 출력 프로젝트 폴더 `{출력 경로}/CLAUDE.md`는 **실행마다**. 종전 §5-4는 "하네스 구축 시 1회"의 절차로만 쓰여 있어, 실행마다 출력 폴더가 달라지는 하네스에서 새 폴더에 포인터가 남지 않았다(rapid-learner 실측). (b)는 절차가 아니라 오케스트레이터 훅으로 박는다 — 시작 Phase에 확인/개설, 최종 보고 Phase에 변경 이력 한 줄 (SKILL.md §5-4, `references/orchestrator-template.md` 템플릿 A·B·C + 작성 원칙 9)
+- **원본 포인터에 `$HARNESS_ROOT` 표기 도입** — 사본이 된 `.claude/`가 원본을 되짚을 수 있도록 출력 폴더 CLAUDE.md에 `**원본:** $HARNESS_ROOT/{harness}/`를 적는다. 경로를 리터럴로 박으면 원본이 옮겨지는 순간 거짓이 되므로 환경변수로 가리키고, 미설정이면 추측하지 말고 사용자에게 묻는다 (SKILL.md §5-4)
+
+### Changed (분량)
+- **Phase 7(하네스 진화)을 `references/harness-evolution.md`로 분리** — 위 추가분으로 SKILL.md가 538줄이 되어 스킬 자신이 규정한 500줄 상한(§4-4)을 어겼다. Phase 7은 실행 후·유지보수 시점에만 필요한 조건부 내용이므로 분리 1순위다. 본문에는 7-1~7-5 요약표와 "언제 이 파일을 읽으라"는 포인터를 남겼고 절 번호는 그대로 유지했다(외부에서 "메타스킬 7-3"으로 참조 중). 485줄
+
+### Docs
+- `references/skill-writing-guide.md` 목차에 §9 누락분 추가
+
+---
+
 ## [1.3.3] - 2026-09-01
 
 ### Added
