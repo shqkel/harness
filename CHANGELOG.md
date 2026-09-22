@@ -6,6 +6,17 @@
 
 ---
 
+## [1.4.1] - 2026-09-22
+
+### Fixed
+- **manifest 메타데이터를 포크 기준으로 정정** — `owner`·`author`·`homepage`·`repository`가 포크 이전(revfactory) 값 그대로여서, 이 포크에만 존재하는 1.3.1~1.4.0의 이슈·PR을 upstream으로 보내게 돼 있었다. 실제 설치 소스는 `shqkel/harness`다(`settings.json`의 `extraKnownMarketplaces`·클론 remote 모두 일치). 상류 저작권 표기(`LICENSE`의 `Copyright 2025 robin`, Apache-2.0)는 그대로 둔다 (`.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json`)
+- marketplace `description` 신설 — `claude plugin validate`가 경고하던 누락분. 포크 계보를 함께 밝힌다
+
+### Known
+- `README.md`·`README_KO.md`·`README_JA.md`의 배지·star-history·설치 안내(`/plugin marketplace add revfactory/harness`)는 아직 upstream을 가리킨다. 설치 안내는 이 포크 사용자를 upstream으로 보내므로 다음에 손볼 때 정정한다
+
+---
+
 ## [1.4.0] - 2026-09-22
 
 ### Added

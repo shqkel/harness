@@ -1,16 +1,17 @@
 {
   "name": "harness-marketplace",
+  "description": "하네스 — Claude Code용 팀 아키텍처 팩토리. 도메인 한 문장을 에이전트 팀과 스킬 세트로 변환하는 메타 스킬. revfactory/harness 포크이며 1.3.1부터 독자 갱신 중.",
   "owner": {
-    "name": "revfactory",
-    "email": "revfactory@gmail.com",
-    "url": "https://github.com/revfactory"
+    "name": "shqkel",
+    "email": "shqkel1863@gmail.com",
+    "url": "https://github.com/shqkel"
   },
   "plugins": [
     {
       "name": "harness",
       "source": "./",
       "description": "에이전트 팀 & 스킬 아키텍트. 도메인/프로젝트에 맞는 하네스를 구성하고, 전문 에이전트를 정의하며, 에이전트가 사용할 스킬을 생성하는 메타 스킬.",
-      "version": "1.4.0"
+      "version": "1.4.1"
     }
   ]
 }
