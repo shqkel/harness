@@ -21,6 +21,8 @@
 
 **English** | [한국어](README_KO.md) | [日本語](README_JA.md)
 
+> **This is a fork of [revfactory/harness](https://github.com/revfactory/harness).** It tracks upstream v1.2.0 and adds spec tracking, naming rules, and harness pointers on top. See [Fork Changes](#fork-changes--what-this-fork-adds) for the exact diff.
+
 > **Harness is a team-architecture factory for Claude Code.** Say **"build a harness for this project"** (English) or **"하네스 구성해줘"** (한국어) or **"ハーネスを構成して"** (日本語), and the plugin turns your domain description into an agent team and the skills they use — picked from six pre-defined team-architecture patterns.
 
 ## Overview
@@ -81,7 +83,7 @@ Phase 6: Validation & Testing
 
 #### Add the marketplace
 ```shell
-/plugin marketplace add revfactory/harness
+/plugin marketplace add shqkel/harness
 ```
 
 #### Install the plugin
@@ -297,6 +299,64 @@ Key finding: effectiveness scales with task complexity — the harder the task, 
 - Cross-runtime scaffolder: [github.com/Gizele1/harness-init](https://github.com/Gizele1/harness-init)
 </details>
 
+## Fork Changes — What This Fork Adds
+
+**Base:** [revfactory/harness](https://github.com/revfactory/harness) v1.2.0 (`main` @ `cceac68`, 2026-06-10) · **This fork:** v1.4.1 · Full history in [CHANGELOG.md](CHANGELOG.md).
+
+Everything below is measured against upstream's current `main`, not against the state at fork time.
+
+### 1. Spec tracking (`references/spec-tracking.md`, new · SKILL.md §5-6, §0-1)
+
+Upstream has no execution-history mechanism: once a session ends, *what was built, why, from which inputs, and how far* survives only in the chat log. This fork adds a spec document model borrowed from GitHub Spec Kit (numbered `NNN-slug/` directories, a `specs/index.md` ledger, a `Draft → In Progress → Done → Superseded` lifecycle) **without** its toolchain — no branch-per-feature, no duplicated implement stage.
+
+- **§5-6** makes every newly generated harness embed the spec, with orchestrator hooks at its opening and closing phases.
+- **§0-1** applies the same rule to harness construction itself — the meta-skill opens a spec for its own build and edit work, gated as Draft when scope is ambiguous.
+- Specs live at the **project folder root** (`specs/`), never under a harness. One project uses several harnesses, so the numbering must be a single sequence; the ledger's *harness* column does the separating.
+
+### 2. Naming rules (SKILL.md §2-4)
+
+Upstream writes agent and skill paths as `{name}.md` and `skill-name/` with no rule for what `{name}` should be. `.claude/agents/` and `.claude/skills/` are a namespace shared by every harness in a project, so unprefixed names collide and a file listing cannot tell you what belongs to what.
+
+- Agents `{harness}-{role}.md`, skills `{harness}.{action}/SKILL.md`, frontmatter `name` matching — prefix abbreviation is disallowed.
+- The skill definition file is fixed as uppercase `SKILL.md`: a lowercase `skill.md` loads on case-insensitive filesystems and silently fails elsewhere.
+- §6-1 verifies naming with `ls` rather than a glob, since a glob would pass the lowercase form on macOS.
+
+### 3. Harness pointers and `$HARNESS_ROOT` (SKILL.md §5-4)
+
+Upstream registers one CLAUDE.md pointer at build time. That is not enough for a harness whose **output folder differs on every run** — the next session opening a new folder has no record the harness exists.
+
+- The pointer is split into **(a)** the harness home, written once at build time, and **(b)** the output project folder, written **on every run** — implemented as an orchestrator hook next to the spec hook, not as a one-time procedure.
+- (b) records the source as `$HARNESS_ROOT/{harness}/`. A copied `.claude/` has to be able to point back at the original, and a literal path stops being true the moment the original moves. When the variable is unset the skill asks rather than guesses.
+
+### 4. Intermediate output folder: `_workspace/` → `.{harness}/` (SKILL.md §5-1)
+
+Upstream writes intermediate artifacts to a shared `_workspace/`. Two harnesses running in one working directory then overwrite each other. This fork gives each harness a hidden folder named after itself. Applied across `SKILL.md`, `orchestrator-template.md`, `team-examples.md`, and `skill-testing-guide.md` (41 occurrences upstream).
+
+### 5. Phase 7 extracted (`references/harness-evolution.md`, new)
+
+The additions above pushed `SKILL.md` past the 500-line ceiling the skill imposes on itself (§4-4). Phase 7 (harness evolution) is only needed after a run or during maintenance, making it the first candidate for conditional loading. The body keeps a summary table and a pointer, and the section numbers are preserved because other documents cite "meta-skill 7-3".
+
+### 6. Fork metadata (v1.4.1)
+
+`owner`, `author`, `homepage`, and `repository` pointed at upstream even though v1.3.1 onward exist only here, which sent issues and PRs to the wrong repository. Corrected to this fork; `LICENSE` keeps upstream's `Copyright 2025 robin` (Apache-2.0).
+
+### Diff at a glance
+
+| File | Upstream | Fork | Change |
+|------|---------:|-----:|--------|
+| `skills/harness/SKILL.md` | 457 | 485 | +108 / −80 |
+| `references/orchestrator-template.md` | 292 | 307 | +43 / −28 |
+| `references/agent-design-patterns.md` | 300 | 302 | +3 / −1 |
+| `references/skill-writing-guide.md` | 298 | 301 | +3 / −0 |
+| `references/team-examples.md` | 328 | 328 | +7 / −7 |
+| `references/skill-testing-guide.md` | 307 | 307 | +3 / −3 |
+| `references/spec-tracking.md` | — | 168 | new file |
+| `references/harness-evolution.md` | — | 81 | new file |
+
+**Unchanged from upstream:** the six team-architecture patterns, the agent-team-first execution model, QA agent guide, skill writing and testing guides (apart from the naming pointers above), and the license.
+
+**One caveat for accuracy:** the fork's CHANGELOG lists the 3-0/4-0 duplicate-review steps and the reuse-design sections as 1.3.2 additions. Upstream's current `main` also has them, so they are **not** part of the diff above.
+
 ## License
 
-Apache 2.0
+Apache 2.0 — upstream copyright (`Copyright 2025 robin`) retained. See [LICENSE](LICENSE).

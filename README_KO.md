@@ -21,6 +21,8 @@
 
 [English](README.md) | **한국어** | [日本語](README_JA.md)
 
+> **이 저장소는 [revfactory/harness](https://github.com/revfactory/harness)의 포크입니다.** 원본 v1.2.0을 기준으로 스펙 추적·명명 규칙·하네스 포인터를 더했습니다. 정확한 차이는 [포크 변경사항](#포크-변경사항--원본-대비-무엇을-더했나)을 보세요.
+
 > **Harness는 Claude Code용 팀 아키텍처 팩토리입니다.** **"하네스 구성해줘"** (한국어) · **"build a harness for this project"** (English) · **"ハーネスを構成して"** (日本語) 한 문장으로, 플러그인이 도메인 설명을 에이전트 팀과 그들이 쓸 스킬로 변환합니다 — 사전 정의된 6가지 팀 아키텍처 패턴 중 하나를 골라서요.
 
 ## 개요
@@ -84,7 +86,7 @@ Phase 6: 검증 및 테스트
 
 #### 마켓플레이스 추가
 ```shell
-/plugin marketplace add revfactory/harness
+/plugin marketplace add shqkel/harness
 ```
 
 #### 플러그인 설치
@@ -293,6 +295,64 @@ Harness는 Claude Code / 에이전트 프레임워크 생태계에서 혼자가 
 - 크로스 런타임 스캐폴더: [github.com/Gizele1/harness-init](https://github.com/Gizele1/harness-init)
 </details>
 
+## 포크 변경사항 — 원본 대비 무엇을 더했나
+
+**원본:** [revfactory/harness](https://github.com/revfactory/harness) v1.2.0 (`main` @ `cceac68`, 2026-06-10) · **이 포크:** v1.4.1 · 전체 이력은 [CHANGELOG.md](CHANGELOG.md).
+
+아래 수치는 포크 시점이 아니라 **원본의 현재 `main`과 대조한 값**이다.
+
+### 1. 스펙 추적 (`references/spec-tracking.md` 신설 · SKILL.md §5-6, §0-1)
+
+원본에는 실행 이력을 남기는 장치가 없다. 세션이 끝나면 *무엇을·왜·어떤 입력으로·어디까지 했는지*가 대화 로그에만 남고, 대화 로그는 프로젝트 밖에 있다. 이 포크는 GitHub Spec Kit의 **문서 모델만** 차용한다 — 번호 스펙 디렉토리(`NNN-slug/`), `specs/index.md` 대장, `Draft → In Progress → Done → Superseded` 수명주기. 툴체인은 도입하지 않는다(브랜치-퍼-피처 전제와 implement 단계 이중화가 하네스 파이프라인과 충돌하므로).
+
+- **§5-6** — 새로 만드는 모든 하네스에 스펙을 내장하고, 오케스트레이터의 시작·종료 Phase에 훅을 박는다.
+- **§0-1** — 같은 규칙을 하네스 구축 작업 자체에 적용한다. 메타스킬이 자신의 구축·수정 작업부터 스펙을 열고, 범위가 모호하면 Draft로 멈춰 합의한다.
+- 스펙은 **프로젝트 폴더 최상위 `specs/`**에 둔다(하네스 하위 금지). 한 프로젝트가 하네스를 여럿 쓰므로 번호 수열은 하나여야 하고, 하네스 구분은 대장의 「하네스」 컬럼이 맡는다.
+
+### 2. 명명 규칙 (SKILL.md §2-4)
+
+원본은 에이전트·스킬 경로를 `{name}.md`·`skill-name/`으로만 적고 `{name}`이 무엇이어야 하는지는 규정하지 않는다. `.claude/agents/`·`.claude/skills/`는 한 프로젝트의 모든 하네스가 공유하는 네임스페이스라, 접두사가 없으면 이름이 충돌하고 파일 목록만으로 소속을 알 수 없다.
+
+- 에이전트 `{harness}-{role}.md`, 스킬 `{harness}.{action}/SKILL.md`, frontmatter `name`도 동일 패턴. 접두사 약어는 금지한다.
+- 스킬 정의 파일명은 대문자 `SKILL.md` 고정 — 소문자 `skill.md`는 대소문자 무시 파일시스템에서만 통과하고 다른 환경에서 조용히 로딩되지 않는다.
+- §6-1은 glob이 아니라 `ls` 실제 표기로 검사한다. macOS에서는 glob이 소문자도 통과시키기 때문이다.
+
+### 3. 하네스 포인터와 `$HARNESS_ROOT` (SKILL.md §5-4)
+
+원본은 CLAUDE.md 포인터를 구축 시 1회만 등록한다. **실행마다 출력 폴더가 달라지는** 하네스에는 부족하다 — 새 폴더를 연 다음 세션은 그 하네스의 존재를 모른다.
+
+- 포인터를 **(a) 하네스 홈**(구축 시 1회)과 **(b) 출력 프로젝트 폴더**(**실행마다**)로 분리했고, (b)는 절차가 아니라 스펙 훅 옆의 오케스트레이터 훅으로 박았다.
+- (b)에 원본 위치를 `$HARNESS_ROOT/{harness}/`로 적는다. 사본이 된 `.claude/`가 원본을 되짚을 수 있어야 하고, 경로를 리터럴로 박으면 원본이 옮겨지는 순간 거짓이 되기 때문이다. 미설정이면 추측하지 않고 묻는다.
+
+### 4. 중간 산출물 폴더: `_workspace/` → `.{harness}/` (SKILL.md §5-1)
+
+원본은 중간 산출물을 공용 `_workspace/`에 쓴다. 한 작업 디렉토리에서 하네스 둘이 돌면 서로를 덮어쓴다. 이 포크는 하네스마다 자기 이름의 hidden 폴더를 준다. `SKILL.md`·`orchestrator-template.md`·`team-examples.md`·`skill-testing-guide.md`에 일괄 적용(원본 기준 41곳).
+
+### 5. Phase 7 분리 (`references/harness-evolution.md` 신설)
+
+위 추가로 `SKILL.md`가 스킬 자신이 규정한 500줄 상한(§4-4)을 넘었다. Phase 7(하네스 진화)은 실행 후·유지보수 시점에만 필요한 조건부 내용이라 분리 1순위다. 본문에는 요약표와 포인터를 남겼고, 다른 문서가 "메타스킬 7-3"으로 참조하므로 절 번호는 유지했다.
+
+### 6. 포크 메타데이터 (v1.4.1)
+
+`owner`·`author`·`homepage`·`repository`가 원본을 가리켜, 이 포크에만 존재하는 v1.3.1 이후의 이슈·PR을 엉뚱한 저장소로 보내게 돼 있었다. 포크 기준으로 정정했고, `LICENSE`의 상류 저작권(`Copyright 2025 robin`, Apache-2.0)은 그대로 둔다.
+
+### 한눈에 보는 차이
+
+| 파일 | 원본 | 포크 | 변경 |
+|------|-----:|-----:|------|
+| `skills/harness/SKILL.md` | 457 | 485 | +108 / −80 |
+| `references/orchestrator-template.md` | 292 | 307 | +43 / −28 |
+| `references/agent-design-patterns.md` | 300 | 302 | +3 / −1 |
+| `references/skill-writing-guide.md` | 298 | 301 | +3 / −0 |
+| `references/team-examples.md` | 328 | 328 | +7 / −7 |
+| `references/skill-testing-guide.md` | 307 | 307 | +3 / −3 |
+| `references/spec-tracking.md` | — | 168 | 신규 |
+| `references/harness-evolution.md` | — | 81 | 신규 |
+
+**원본 그대로인 것:** 6가지 팀 아키텍처 패턴, 에이전트 팀 우선 실행 모델, QA 에이전트 가이드, 스킬 작성·테스트 가이드(위 명명 포인터 제외), 라이선스.
+
+**정확성을 위한 단서 하나:** 이 포크의 CHANGELOG는 3-0/4-0 중복 검토 단계와 재사용 설계 섹션을 1.3.2의 추가분으로 적었다. 원본의 현재 `main`에도 있으므로 위 차이에는 **포함되지 않는다.**
+
 ## 라이선스
 
-Apache 2.0
+Apache 2.0 — 상류 저작권(`Copyright 2025 robin`) 유지. [LICENSE](LICENSE) 참조.
