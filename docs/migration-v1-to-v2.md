@@ -23,8 +23,9 @@ v1 오케스트레이터를 그대로 실행하면 존재하지 않는 도구 �
 | `export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` | 삭제 |
 | 모든 에이전트 `model: "opus"` | 일괄 지정 해제 → 업무 특성(복잡도·기간·자율성·속도)별 fable/opus/sonnet 재선택 (`references/model-selection-guide.md`) |
 | 팀 기반 대규모 팬아웃/생성-검증 루프 | `Workflow` 스크립트 (`pipeline()` + `schema` + 적대적 검증) |
-| Phase 0 컨텍스트 확인 (`_workspace/` 분기) | 유지 + 워크플로우 모드는 `resumeFromRunId` 추가 |
-| `_workspace/` 파일 컨벤션, CLAUDE.md 포인터/변경 이력 | 그대로 유지 |
+| Phase 0 컨텍스트 확인 (`_workspace/` 분기) | 유지(분기 대상은 `.{harness}/`) + 워크플로우 모드는 `resumeFromRunId` 추가 |
+| `_workspace/` 파일 컨벤션 | **이름 변경(포크)** — 하네스별 숨김 폴더 `.{harness}/`로 옮긴다. 파일 이름 규칙은 유지 |
+| CLAUDE.md 포인터/변경 이력 | 유지 + **포크**: 하네스 홈·출력 폴더 두 곳으로 분리(SKILL.md 5-4) |
 
 ## 수동 마이그레이션 절차
 

@@ -45,7 +45,7 @@ Spec Kit의 clarify→specify→plan→tasks→analyze→implement 흐름은 **�
 
 ## 디렉토리·번호 규칙
 
-스펙은 **프로젝트 폴더 최상위 `specs/`**에 둔다. 하네스 하위(`.{하네스명}/specs/`)가 아니다.
+스펙은 **프로젝트 폴더 최상위 `specs/`**에 둔다. 하네스 하위(`.{harness}/specs/`)가 아니다.
 
 ```
 {프로젝트 폴더}/specs/
