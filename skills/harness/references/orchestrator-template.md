@@ -49,7 +49,7 @@ Workflow 사용에 동의한 것으로 본다. 기본 에이전트 수는 {N}명
      캐시 결과를 즉시 반환하므로 실행 비용이 적다.
 3. 새로 실행하면 새 `runId`를 받아 `.{harness}/run_meta.json`에 기록한다.
 4. **스펙 개설·귀속** — 프로젝트 폴더 **최상위** `specs/index.md`를 읽고 이번 요청을 기존 스펙에 붙이거나 새 스펙(`NNN-slug/spec.md`)을 연다. `specs/`가 없으면 만든다. 귀속 규칙과 Draft 게이트는 `references/spec-tracking.md`를 따른다. 스펙 번호와 `runId`를 서로 적어 둔다(스펙 실행 로그에 `runId`, `run_meta.json`에 스펙 번호).
-5. **출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b).
+5. **출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b)와 `references/claude-md-pointer.md`.
 
 ### 1단계: 작업 목록 확정(메인 에이전트가 직접 수행)
 
@@ -135,7 +135,7 @@ v1처럼 명시적인 팀 객체를 만들지 않는다. 세션에서 이름을 
 
 **스펙 개설·귀속** — 프로젝트 폴더 **최상위** `specs/index.md`를 읽고 이번 요청을 기존 스펙에 붙이거나 새 스펙(`NNN-slug/spec.md`)을 연다. `specs/`가 없으면 만든다. 귀속 규칙과 Draft 게이트는 `references/spec-tracking.md`를 따른다. 이후 단계 경계마다(4단계 동결과 같은 시점) 실행 로그에 한 줄 남긴다. 스펙은 리더만 쓴다.
 
-**출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b).
+**출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b)와 `references/claude-md-pointer.md`.
 
 ### 1단계: 준비
 1. 사용자 입력을 분석해 {무엇을 파악하는지}를 확인한다.
@@ -233,7 +233,7 @@ description: "{도메인}의 독립 작업을 서브에이전트에 위임한다
 
 **스펙 개설·귀속** — 프로젝트 폴더 **최상위** `specs/index.md`를 읽고 이번 요청을 기존 스펙에 붙이거나 새 스펙(`NNN-slug/spec.md`)을 연다. `specs/`가 없으면 만든다. 귀속 규칙과 Draft 게이트는 `references/spec-tracking.md`를 따른다. 에이전트 완료 알림을 받을 때마다 실행 로그에 한 줄 남긴다.
 
-**출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b).
+**출력 폴더 `CLAUDE.md` 확인·개설** — 출력 경로의 `CLAUDE.md`를 읽는다. 없으면 이 하네스의 연결 정보 절(원본 `$HARNESS_ROOT/{harness}/` · 호출 조건 · 산출물 경로)을 만든다. 실행마다 출력 폴더가 달라질 수 있으므로 매 실행에 확인한다. 양식은 harness 메타스킬 5-4(b)와 `references/claude-md-pointer.md`.
 
 ### 1단계: 준비
 입력을 분석하고 `.{harness}/`를 만든다.
