@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.1.0-brightgreen.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.0.0%20(fork)-brightgreen.svg" alt="Version">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-purple.svg" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/Execution_Modes-3-teal.svg" alt="3 Execution Modes">
@@ -7,16 +7,14 @@
 </p>
 
 <p align="center">
-  <a href="https://revfactory.github.io/harness-animation/">
-    <img src="harness_reel_en.gif" alt="Harness in 15 seconds: one request becomes an agent team" width="800">
-  </a>
-  <br>
-  <sub>15-second motion reel · <a href="https://revfactory.github.io/harness-animation/">Watch the full 2-minute interactive walkthrough (Korean) →</a></sub>
+  <sub><a href="https://revfactory.github.io/harness-animation/">Watch the full 2-minute interactive walkthrough (Korean) →</a></sub>
 </p>
 
 # Harness v2 — The Team-Architecture Factory for Claude Code
 
 **English** | [한국어](README_KO.md)
+
+> **This repository is a fork of [revfactory/harness](https://github.com/revfactory/harness).** Based on upstream v2.1.0, it adds spec tracking, a naming convention, two-place `CLAUDE.md` pointers and per-harness intermediate folders. See [Fork changes](#fork-changes--what-this-fork-adds).
 
 > **Harness is a team-architecture factory for Claude Code.** One sentence — **"build a harness for this project"** · **"하네스 구성해줘"** — and the plugin turns your domain description into an agent team and the skills they use.
 
@@ -60,7 +58,7 @@ Phase 7: Maintenance — evolution via /harness:evolve
 ### Via marketplace
 
 ```shell
-/plugin marketplace add revfactory/harness
+/plugin marketplace add shqkel/harness
 /plugin install harness@harness-marketplace
 ```
 
@@ -119,6 +117,20 @@ See [docs/migration-v1-to-v2.md](docs/migration-v1-to-v2.md). Summary: remove `T
 ## Prior results (v1)
 
 A controlled A/B on 15 software-engineering tasks measured the effect of structured pre-configuration on LLM code-agent output quality: mean quality 49.5 → 79.3 (+60%), 15/15 win rate, −32% output variance (n=15, author-run, see [revfactory/claude-code-harness](https://github.com/revfactory/claude-code-harness)). Treat these as author-measured numbers; run your own pilot for adoption decisions.
+
+## Fork changes — what this fork adds
+
+**Upstream:** [revfactory/harness](https://github.com/revfactory/harness) v2.1.0 (`main` @ `92d9f1b`, 2026-09-28) · **This fork:** v2.0.0 · Full history in [CHANGELOG.md](CHANGELOG.md) (Korean).
+
+This fork keeps its own version line. Fork v2.0.0 merges upstream v2.1.0 and re-ports the fork's conventions onto the v2 structure; the execution engine (three execution modes, quality patterns, model tiers, `harness:evolve`) is upstream as-is.
+
+1. **Spec tracking** (`references/spec-tracking.md`, SKILL.md 0-1 / 5-6) — numbered specs in a project-level `specs/` ledger; hooks at the start and end of every orchestrator template (outside the script in Workflow mode); applied to the harness build itself.
+2. **Naming convention** (SKILL.md 2-4) — agents `{harness}-{role}.md`, entry skill `{harness}/`, other skills `{harness}.{action}/`, uppercase `SKILL.md`, no abbreviated prefixes; frontmatter `name` must match the file name or `subagent_type` calls fall back to `general-purpose`.
+3. **Two `CLAUDE.md` pointers + `$HARNESS_ROOT`** (SKILL.md 5-4, `references/claude-md-pointer.md`) — harness home (once) and output project folder (every run, as an orchestrator hook).
+4. **Intermediate folder `.{harness}/`** instead of the shared `_workspace/` (all 41 occurrences).
+5. **Numbered stage 7** (7-1 to 7-5) so external references such as "meta-skill 7-3" keep resolving.
+
+Removed from upstream: the motion-reel GIFs and `docs/harness-animation.mp4` (~20 MB downloaded on every plugin install); the README links to the upstream animation page instead.
 
 ## License
 

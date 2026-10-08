@@ -13,7 +13,7 @@
 ## Step 1 — 마켓플레이스 추가 (30초)
 
 ```
-/plugin marketplace add revfactory/harness
+/plugin marketplace add shqkel/harness
 ```
 
 ## Step 2 — 플러그인 설치 (30초)

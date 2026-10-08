@@ -1,8 +1,128 @@
 # Changelog
 
-이 프로젝트는 [Semantic Versioning](https://semver.org/)을 따릅니다.
+이 프로젝트는 [Semantic Versioning](https://semver.org/)을 따릅니다. **이 포크(shqkel/harness)의 버전은 원본과 따로 센다.** 원본 revfactory/harness의 이력은 아래 「상류 이력」에 `(상류)` 표시로 둔다.
 
-## [2.1.0] - 2026-09-26
+## [Unreleased]
+
+---
+
+## [2.0.0] - 2026-10-08
+
+원본 [revfactory/harness](https://github.com/revfactory/harness) **v2.1.0을 병합**하고, 포크 1.3.0~1.4.2의 기능을 v2 구조에 다시 옮겼다. 포크 커밋은 v1 본문 기준 diff라 줄 단위로 얹지 않고 재작성했다. 이 포크의 버전은 원본과 따로 센다. 원본이 바꾼 내용은 아래 「상류 이력」의 [2.1.0] (상류)·[2.0.0] (상류)를 본다.
+
+### Breaking (원본 v2에서 들어옴)
+- `TeamCreate`/`TeamDelete`/`team_name`·`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` 제거 → 워크플로 조율 / 지속형 에이전트 협업 / 서브에이전트 위임 3중 실행 모드
+- `model: "opus"` 일괄 지정 폐기 → 업무 특성별 fable/opus/sonnet 선택
+- Phase 7 진화 절차 → `harness:evolve` 스킬로 분리 (포크의 `references/harness-evolution.md`는 내용이 모두 겹쳐 삭제)
+- `references/agent-design-patterns.md` → `references/team-patterns.md`
+
+### 다시 옮긴 포크 기능
+- **중간 산출물 폴더 `.{harness}/`** — 원본 v2의 `_workspace/` 41곳(`evolve`·`execution-modes`·`workflow-recipes` 등 새 파일 포함)을 모두 치환. 5-1에 정의, `execution-modes.md` v1→v2 대응표에 이름 변경 항목 추가
+- **스펙 추적** — 0-1(구축 작업 자체), 5-6(생성 하네스 내장), 템플릿 A·B·C·혼합의 시작·마무리 훅, 작성 원칙 10
+- **명명 규칙 2-4** — 3·4단계, `team-patterns.md`, `skill-writing-guide.md`, 템플릿 `name`(`{domain}-orchestrator` → `{harness}`)에 반영
+- **5-4 연결 정보 두 곳 + `$HARNESS_ROOT`** — 템플릿 훅과 작성 원칙 11. 양식은 `references/claude-md-pointer.md`로 분리
+- **7단계 절 번호 7-1~7-5** — 외부 참조("메타스킬 7-3") 보존
+
+### Added (v2에 맞춰 새로 정한 것)
+- **워크플로 모드의 스펙 훅 위치** — 스크립트 안이 아니라 호출 전(0단계)·반환 후(정리 단계)에 둔다. 스크립트에서 날짜를 만들면(`Date.now()`) 재개가 깨지므로 실행 로그 날짜는 메인 에이전트가 쓴다. `spec-tracking.md`에 실행 모드별 훅 위치 표 추가
+- **스펙은 메인 에이전트만 쓴다** — 여러 에이전트가 같은 `spec.md`를 동시에 고치면 기록이 엇갈린다
+- **프론트매터 `name` = 파일 이름** — 다르면 `subagent_type` 호출이 안 돼 `general-purpose`로 우회하고, 정의 파일의 `model`·`tools`가 적용되지 않는다(2-4)
+
+### Changed
+- `SKILL.md` 504줄 → 5-4 양식 분리 후 462줄 (500줄 상한 준수)
+- manifest를 포크 기준(`owner`·`author`·`homepage`·`repository`)으로 유지하고 description에 「기반: 원본 v2.1.0」 명시
+- README 2종(EN/KO) 「포크 변경사항」을 원본 v2.1.0 대비 실측으로 다시 작성, 설치 안내를 `shqkel/harness`로
+
+### Removed
+- `harness_reel_en.gif`·`harness_reel_ko.gif`·`docs/harness-animation.mp4`(합계 약 20MB) — 플러그인 설치 때마다 받게 되므로 뺐다. README는 원본 애니메이션 페이지 링크로 대신
+- `README_JA.md` — 원본 v2와 같이 삭제
+
+---
+
+## [1.4.2] - 2026-09-22
+
+### Fixed
+- **§2-4의 `{harness}/` 조항을 "진입 스킬" 규약으로 정정** — 종전 문구("스킬이 하나뿐인 하네스는 생략 가능, 둘째가 생기면 나눈다")는 스킬이 여럿인 하네스의 진입 스킬까지 개명하라는 뜻으로 읽혔다. 실측(`alter-study`: 진입 `alter-study` + `alter-study.{advisor,editor,librarian,roommate,tutor}` 5종)에서 그 개명은 사용자가 직접 부르는 트리거 이름을 깨뜨릴 뿐 충돌도 식별 저해도 없었다. 접두사가 이미 붙어 있으므로 `{harness}/`를 진입 스킬 자리로 못 박는다
+
+---
+
+## [1.4.1] - 2026-09-22
+
+### Fixed
+- **manifest 메타데이터를 포크 기준으로 정정** — `owner`·`author`·`homepage`·`repository`가 포크 이전(revfactory) 값 그대로여서, 이 포크에만 존재하는 1.3.1~1.4.0의 이슈·PR을 upstream으로 보내게 돼 있었다. 실제 설치 소스는 `shqkel/harness`다(`settings.json`의 `extraKnownMarketplaces`·클론 remote 모두 일치). 상류 저작권 표기(`LICENSE`의 `Copyright 2025 robin`, Apache-2.0)는 그대로 둔다 (`.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json`)
+- marketplace `description` 신설 — `claude plugin validate`가 경고하던 누락분. 포크 계보를 함께 밝힌다
+
+### Docs
+- **README 3종에 「포크 변경사항」 절 신설** — 상류(v1.2.0 `main` @ `cceac68`)와 대조한 실측 차이를 항목별 근거·파일별 증감표와 함께 명시. 상단에 포크 고지 배너 추가. 설치 안내를 `revfactory/harness` → `shqkel/harness`로 정정 — 이 포크 사용자를 upstream으로 보내고 있었다
+- CHANGELOG 1.3.2의 「3-0/4-0 중복 검토·재사용 설계 추가」는 상류 현재 `main`에도 존재하므로 포크 차이가 아니다 — README에 단서로 명기
+
+### Known
+- README 3종의 배지·star-history 링크는 아직 upstream 저장소를 가리킨다(스타 수 표시 목적)
+
+---
+
+## [1.4.0] - 2026-09-22
+
+### Added
+- **명명 규칙 신설 (§2-4)** — 에이전트 `{harness}-{role}.md`, 스킬 `{harness}.{action}/SKILL.md`, frontmatter `name`도 동일 패턴. `.claude/agents/`·`.claude/skills/`는 한 프로젝트의 모든 하네스가 공유하는 네임스페이스인데 규칙이 어디에도 없어, 접두사 누락(`equipment-planner`)·접두사 약어(`cs-writer`)·소문자 `skill.md`가 누적되고 있었다. 스킬 정의 파일명은 대문자 `SKILL.md`로 고정 — 대소문자 무시 파일시스템에서만 통과하던 소문자 이름은 배포 시점에 드러나는 결함이다. 기존 하네스는 일괄 소급하지 않고 다음에 손대는 시점에 맞춘다 (SKILL.md §2-4·§3·§4·§6-1·체크리스트, `references/skill-writing-guide.md`, `references/agent-design-patterns.md`)
+- **스펙 우선 — 하네스 구축 자체에 적용 (§0-1)** — 종전 §5-6은 "생성되는 하네스에 스펙 추적을 심어라"였을 뿐, 메타스킬 자신의 구축·수정 작업에는 스펙이 없었다. Phase 0에 스펙 개설/귀속 훅을 넣고, 위치(`$HARNESS_ROOT/specs/` 또는 `{프로젝트}/specs/`)·게이트(신규 구축·아키텍처 변경은 Draft로 합의 후 In Progress)·닫기(Phase 6 통과 후 Done)를 정했다. CLAUDE.md 변경 이력은 *무엇이 바뀌었나*만 남기고 *무엇을 안 하기로 했나*는 남기지 않는다 (SKILL.md §0-1·체크리스트)
+
+### Changed
+- **§5-4 CLAUDE.md 포인터를 두 자리로 분리** — (a) 하네스 홈 `{harness}/CLAUDE.md`는 구축 시 1회, (b) 출력 프로젝트 폴더 `{출력 경로}/CLAUDE.md`는 **실행마다**. 종전 §5-4는 "하네스 구축 시 1회"의 절차로만 쓰여 있어, 실행마다 출력 폴더가 달라지는 하네스에서 새 폴더에 포인터가 남지 않았다(rapid-learner 실측). (b)는 절차가 아니라 오케스트레이터 훅으로 박는다 — 시작 Phase에 확인/개설, 최종 보고 Phase에 변경 이력 한 줄 (SKILL.md §5-4, `references/orchestrator-template.md` 템플릿 A·B·C + 작성 원칙 9)
+- **원본 포인터에 `$HARNESS_ROOT` 표기 도입** — 사본이 된 `.claude/`가 원본을 되짚을 수 있도록 출력 폴더 CLAUDE.md에 `**원본:** $HARNESS_ROOT/{harness}/`를 적는다. 경로를 리터럴로 박으면 원본이 옮겨지는 순간 거짓이 되므로 환경변수로 가리키고, 미설정이면 추측하지 말고 사용자에게 묻는다 (SKILL.md §5-4)
+
+### Changed (분량)
+- **Phase 7(하네스 진화)을 `references/harness-evolution.md`로 분리** — 위 추가분으로 SKILL.md가 538줄이 되어 스킬 자신이 규정한 500줄 상한(§4-4)을 어겼다. Phase 7은 실행 후·유지보수 시점에만 필요한 조건부 내용이므로 분리 1순위다. 본문에는 7-1~7-5 요약표와 "언제 이 파일을 읽으라"는 포인터를 남겼고 절 번호는 그대로 유지했다(외부에서 "메타스킬 7-3"으로 참조 중). 485줄
+
+### Docs
+- `references/skill-writing-guide.md` 목차에 §9 누락분 추가
+
+---
+
+## [1.3.3] - 2026-09-01
+
+### Added
+- **오케스트레이터 템플릿에 스펙 훅 내장** — 템플릿 A(Phase 0 / Phase 5)·B(Phase 0 / Phase 4)·C(하이브리드)에 "스펙 개설/귀속"과 "완료 기록 → Done → index 갱신"을 명시하고, 작성 원칙 8번으로 승격. 종전에는 SKILL.md §5-6의 산문 지시로만 존재해 하네스 생성자가 훅을 빠뜨리거나 옛 경로로 심어도 걸러지지 않았다 — 1.3.2의 경로 이관이 반쪽으로 끝난 원인과 같은 자리다 (`references/orchestrator-template.md`, SKILL.md §5-6)
+
+---
+
+## [1.3.2] - 2026-09-01
+
+### Changed
+- **스펙 디렉토리를 프로젝트 폴더 최상위 `specs/`로 변경** (기존 `.{하네스명}/specs/`) — 한 프로젝트 폴더가 하네스를 여럿 쓸 때 ① 각 하네스가 001부터 세어 번호가 충돌하고 ② 하네스 경계를 넘는 작업이 어느 대장에도 온전히 속하지 못하는 문제가 실제로 발생했다. 대장·번호 수열은 프로젝트당 하나로 두고, 하네스 구분은 대장의 「하네스」 컬럼이 맡는다. 이미 `specs/`가 있으면 다음 번호를 이어 쓴다 (`references/spec-tracking.md`, SKILL.md §5-6, §6-1 검증 항목)
+
+### Added
+- 신규 에이전트/스킬 생성 전 중복 검토 단계 (Phase 3-0, Phase 4-0)
+- `references/agent-design-patterns.md` "에이전트 재사용 설계" 섹션
+- `references/skill-writing-guide.md` §9 "스킬 재사용 설계"
+
+### Changed (재사용 설계)
+- Phase 선택 매트릭스에 3-0/4-0 명시
+- Phase 2-3에 재사용 검토 단계 포인터 추가
+- 산출물 체크리스트에 재사용 검토 항목 2개 추가
+
+---
+
+## [1.3.1] - 2026-08-09
+
+### Docs
+- `references/spec-tracking.md`에 "Spec Kit 단계 대응"(constitution~converge ↔ 하네스 Phase 분담표)과 "게이트 규칙"(Draft 합의·Superseded 사전 확인) 추가 — 스펙과 파이프라인의 역할 경계 명문화
+
+## [1.3.0] - 2026-08-09 (shqkel/harness 포크)
+
+### Added
+- **스펙 추적 규격 내장** — 신규 하네스 생성 시 `.{하네스명}/specs/` 실행 이력 관리(스펙 문서·index 대장·시작/최종 보고 Phase 훅)를 자동 포함 (SKILL.md §5-6, §6-1 검증 항목, `references/spec-tracking.md` 신규)
+
+### Changed
+- **내부 산출물 폴더 관례 `_workspace/` → `.<하네스명>/`** — 하네스별 hidden 폴더로 전환해 여러 하네스가 한 작업 디렉토리에서 충돌 없이 공존 (SKILL.md, orchestrator-template, skill-testing-guide, team-examples, agent-design-patterns)
+
+---
+
+# 상류 이력 — revfactory/harness
+
+포크 2.0.0이 병합한 원본 이력이다(`main` @ `92d9f1b`). 원본 1.2.1 이하는 포크 1.3.0 이전의 공통 이력이다.
+
+## [2.1.0] (상류) - 2026-09-26
 
 ### Changed
 
@@ -24,7 +144,7 @@
 - **설치 명령 오류** — README·quickstart의 `harness@harness`를 `harness@harness-marketplace`로 수정 (#46)
 - **marketplace 소유자 이메일** — v2 브랜치에서 빈 값으로 돌아간 `owner.email`을 main의 값으로 유지
 
-## [2.0.0] - 2026-07-19
+## [2.0.0] (상류) - 2026-07-19
 
 전면 재구축 (ground-up rebuild). v1의 전제였던 실험적 Agent Teams API가 현행 Claude Code에서 사라졌고, 결정적 오케스트레이션을 위한 Workflow 도구가 새로 추가된 환경 변화에 맞춰 모든 것을 다시 설계했다.
 
@@ -62,7 +182,7 @@
 - **저장소 운영 부산물 제거** — 런치 캠페인용 `_workspace/` 산출물, 마케팅 에이전트 정의(`.claude/agents/launch-strategist` 등), `docs/experimental-dependency.md`
 - README_JA (일본어 README) — 유지보수 부담 대비 효용 저조. EN/KO 2종 유지
 
-## [1.2.1] - 2026-04-18
+## [1.2.1] (상류) - 2026-04-18
 
 ### Fixed
 
@@ -83,7 +203,7 @@
 - **`.claude-plugin/plugin.json` description 재작성** — `"Agent Team & Skill Architect — Meta-skill that designs..."` → `"The team-architecture factory for Claude Code — a meta-skill that turns a domain description into an agent team and the skills they use, with six pre-defined team-architecture patterns..."` (EN+KO 병기, L3 Meta-Factory 포지셔닝 반영)
 - **`.claude-plugin/plugin.json` keywords 확장** — 5개 → 17개 (`harness-factory`, `team-architecture-factory`, `claude-code-plugin`, `agent-scaffolding`, `multi-agent`, 6패턴 키워드 6종 추가)
 
-## [1.2.0] - 2026-04-08
+## [1.2.0] (상류) - 2026-04-08
 
 ### Changed
 
@@ -100,7 +220,7 @@
 - **Phase 5-1 반환값 기반 데이터 전달** — 서브 에이전트 모드 전용 데이터 전달 전략 추가 (기존 메시지/태스크/파일 + 반환값)
 - **Phase 5-1 권장 조합 (서브/하이브리드)** — 팀 모드 외 서브 모드와 하이브리드에서의 데이터 전달 권장 조합 명시
 
-## [1.1.0] - 2026-04-05
+## [1.1.0] (상류) - 2026-04-05
 
 ### Added
 
@@ -126,7 +246,7 @@
 - **역할 분담표 확장** — 스킬 목록, 디렉토리 구조, 변경 이력 행 추가
 - **오케스트레이터 템플릿** — Phase 0 컨텍스트 확인 단계, 후속 작업 키워드 가이드 추가
 
-## [1.0.1] - 2026-03-28
+## [1.0.1] (상류) - 2026-03-28
 
 ### Changed
 
@@ -136,7 +256,7 @@
   - Phase 3: 에이전트 정의 템플릿 코드블록 → 필수 섹션 나열 + references 포인터
   - Phase 5-2: 에러 핸들링 5행 테이블 → 핵심 원칙 + orchestrator-template.md 포인터
 
-## [1.0.0] - 2026-03-27
+## [1.0.0] (상류) - 2026-03-27
 
 ### Added
 
