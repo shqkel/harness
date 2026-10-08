@@ -2,86 +2,65 @@
 
 이 프로젝트는 [Semantic Versioning](https://semver.org/)을 따릅니다.
 
-## [Unreleased]
+## [2.1.0] - 2026-09-26
 
----
+### Changed
 
-## [1.4.2] - 2026-09-22
+- **모델 정책 개편: "세션 모델 상속 기본" → "업무 특성 기반 티어 선택"** — 에이전트를 정의할 때 업무의 복잡도·작업 기간·자율성·응답 속도 4가지 기준으로 fable(계획을 세워 장기간 자율 실행하는 최고 난도 업무) / opus(설계·코드 생성·복잡한 분석·교차 검증) / sonnet(로그 분석·형식 변환·단순 수집 같은 일상 업무)을 에이전트별로 고르도록 변경. 애매하면 sonnet, 근거 없는 일괄 지정 금지 원칙 유지
+- **스킬 문장 정리** — harness 스킬 본문과 레퍼런스 9종의 번역투를 걷어내고 용어를 통일
+- **버전 정합성 2.1.0 동기화** — `.claude-plugin/plugin.json`·`marketplace.json`·README 뱃지(EN/KO)를 2.1.0으로 통일
+
+### Added
+
+- **`references/model-selection-guide.md`** — 티어별 핵심 역할·적합 업무·선택 상황, 티어 구분 기준, 하네스 적용 규칙(업무 단위 판단, 계층 분리, 워크플로 단계별 적용) 상세 가이드
+- **생성물 언어 규칙** — 생성하는 에이전트·스킬·오케스트레이터는 스킬 문서의 언어가 아니라 사용자가 대화에 쓰는 언어로 작성 (#28)
+- **단계 경계 산출물 동결** — 지속형 에이전트 협업에서 다음 단계를 시작하기 전에 완료 보고를 모두 확인하고, 동결을 알리고, 산출물 해시를 기록해 최종 검증에서 다시 확인 (#53)
+- **에이전트·스킬 중복 검토** — 새 에이전트·스킬을 만들기 전에 기존 것과 겹치는지 확인하고, 겹치면 기존 것을 확장. v1.x에 병합된 기여(#17)를 v2 구조로 이식
 
 ### Fixed
-- **§2-4의 `{harness}/` 조항을 "진입 스킬" 규약으로 정정** — 종전 문구("스킬이 하나뿐인 하네스는 생략 가능, 둘째가 생기면 나눈다")는 스킬이 여럿인 하네스의 진입 스킬까지 개명하라는 뜻으로 읽혔다. 실측(`alter-study`: 진입 `alter-study` + `alter-study.{advisor,editor,librarian,roommate,tutor}` 5종)에서 그 개명은 사용자가 직접 부르는 트리거 이름을 깨뜨릴 뿐 충돌도 식별 저해도 없었다. 접두사가 이미 붙어 있으므로 `{harness}/`를 진입 스킬 자리로 못 박는다
 
----
+- **다시 시도해도 소용없는 실패 구분** — 사용량 한도 소진·인증 만료·권한 거부는 재시도하지 않고, 부분 산출물로 진행 정도를 확인해 누락을 파일로 기록하고 보고. 오케스트레이터는 확인한 사실만 대신 반영하고 에이전트의 판단은 추측해 채우지 않음 (#53)
+- **`tools:` 지정 시 주의 사항** — 산출물을 고치는 에이전트에 Edit가 빠지는 문제, 지연 로딩 도구가 주입되지 않을 수 있는 문제 (#53)
+- **설치 명령 오류** — README·quickstart의 `harness@harness`를 `harness@harness-marketplace`로 수정 (#46)
+- **marketplace 소유자 이메일** — v2 브랜치에서 빈 값으로 돌아간 `owner.email`을 main의 값으로 유지
 
-## [1.4.1] - 2026-09-22
+## [2.0.0] - 2026-07-19
 
-### Fixed
-- **manifest 메타데이터를 포크 기준으로 정정** — `owner`·`author`·`homepage`·`repository`가 포크 이전(revfactory) 값 그대로여서, 이 포크에만 존재하는 1.3.1~1.4.0의 이슈·PR을 upstream으로 보내게 돼 있었다. 실제 설치 소스는 `shqkel/harness`다(`settings.json`의 `extraKnownMarketplaces`·클론 remote 모두 일치). 상류 저작권 표기(`LICENSE`의 `Copyright 2025 robin`, Apache-2.0)는 그대로 둔다 (`.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json`)
-- marketplace `description` 신설 — `claude plugin validate`가 경고하던 누락분. 포크 계보를 함께 밝힌다
+전면 재구축 (ground-up rebuild). v1의 전제였던 실험적 Agent Teams API가 현행 Claude Code에서 사라졌고, 결정적 오케스트레이션을 위한 Workflow 도구가 새로 추가된 환경 변화에 맞춰 모든 것을 다시 설계했다.
 
-### Docs
-- **README 3종에 「포크 변경사항」 절 신설** — 상류(v1.2.0 `main` @ `cceac68`)와 대조한 실측 차이를 항목별 근거·파일별 증감표와 함께 명시. 상단에 포크 고지 배너 추가. 설치 안내를 `revfactory/harness` → `shqkel/harness`로 정정 — 이 포크 사용자를 upstream으로 보내고 있었다
-- CHANGELOG 1.3.2의 「3-0/4-0 중복 검토·재사용 설계 추가」는 상류 현재 `main`에도 존재하므로 포크 차이가 아니다 — README에 단서로 명기
+### Breaking / Fixed
 
-### Known
-- README 3종의 배지·star-history 링크는 아직 upstream 저장소를 가리킨다(스타 수 표시 목적)
-
----
-
-## [1.4.0] - 2026-09-22
+- **`TeamCreate`/`TeamDelete`/`team_name` 전면 제거** — 현행 런타임에 존재하지 않는 API. 세션의 단일 암묵 팀 + `Agent(name:)` + `SendMessage` 구조로 전 템플릿 재작성. v1 오케스트레이터는 이 API를 호출하다 단일 에이전트 실행으로 조용히 퇴화하는 실질적 브로큰 상태였다
+- **`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 의존 제거** — 플래그 안내 문서(`docs/experimental-dependency.md`) 및 모든 참조 삭제. v2는 플래그 없이 동작한다
+- **`model: "opus"` 전 에이전트 강제 정책 폐기** — 세션 모델 상속이 기본. 오버라이드는 근거(기계적 작업의 비용 절감 / 최고 난도 검증)가 있을 때만 명시
+- **README-실체 불일치 해소** — v1 README가 홍보하던 `/harness:evolve` 스킬이 실제로는 존재하지 않았다. v2에서 실제 스킬로 출시
+- **"세션당 한 팀" 제약 및 팀 재구성 절차 삭제** — 제약 자체가 소멸
 
 ### Added
-- **명명 규칙 신설 (§2-4)** — 에이전트 `{harness}-{role}.md`, 스킬 `{harness}.{action}/SKILL.md`, frontmatter `name`도 동일 패턴. `.claude/agents/`·`.claude/skills/`는 한 프로젝트의 모든 하네스가 공유하는 네임스페이스인데 규칙이 어디에도 없어, 접두사 누락(`equipment-planner`)·접두사 약어(`cs-writer`)·소문자 `skill.md`가 누적되고 있었다. 스킬 정의 파일명은 대문자 `SKILL.md`로 고정 — 대소문자 무시 파일시스템에서만 통과하던 소문자 이름은 배포 시점에 드러나는 결함이다. 기존 하네스는 일괄 소급하지 않고 다음에 손대는 시점에 맞춘다 (SKILL.md §2-4·§3·§4·§6-1·체크리스트, `references/skill-writing-guide.md`, `references/agent-design-patterns.md`)
-- **스펙 우선 — 하네스 구축 자체에 적용 (§0-1)** — 종전 §5-6은 "생성되는 하네스에 스펙 추적을 심어라"였을 뿐, 메타스킬 자신의 구축·수정 작업에는 스펙이 없었다. Phase 0에 스펙 개설/귀속 훅을 넣고, 위치(`$HARNESS_ROOT/specs/` 또는 `{프로젝트}/specs/`)·게이트(신규 구축·아키텍처 변경은 Draft로 합의 후 In Progress)·닫기(Phase 6 통과 후 Done)를 정했다. CLAUDE.md 변경 이력은 *무엇이 바뀌었나*만 남기고 *무엇을 안 하기로 했나*는 남기지 않는다 (SKILL.md §0-1·체크리스트)
+
+- **3중 실행 모드 체계** — 워크플로우 오케스트레이션(신규) / 퍼시스턴트 에이전트 협업(v1 팀 모드 대체) / 서브에이전트 위임. 모드 선택 기준을 "팀 크기"에서 **"제어 흐름의 결정성"**으로 재정의
+- **워크플로우 오케스트레이션 모드** — `Workflow` 도구 기반: `pipeline()`/`parallel()`, 구조화 출력 스키마(파싱 불필요), `budget` 연동 규모 조절, `resumeFromRunId` 부분 재실행, 커스텀 `agentType`, `isolation: worktree`
+- **품질 패턴 카탈로그** — 적대적 검증, 관점 분산 검증, 심판 패널, loop-until-dry, 다각 스윕, 완전성 비평가, 침묵 상한 금지
+- **`skills/evolve` (`/harness:evolve`)** — 델타 수집 → 피드백 유형 분류 → 일반화 반영 → 변경 이력 갱신 → 진화 보고의 5단계 진화 스킬. 관찰 기반 진화 신호(반복 피드백, 오케스트레이터 우회 흔적) 감지 포함
+- **v1 → v2 마이그레이션 경로** — Phase 0에서 v1 산출물 자동 감지, `docs/migration-v1-to-v2.md` + `references/execution-modes.md`에 변환 매핑 표
+- **신규 레퍼런스** — `execution-modes.md`(3중 모드 + 마이그레이션), `workflow-recipes.md`(스크립트 스켈레톤 6종 + 함정 12종 체크리스트)
+- **데이터 전달 프로토콜에 "구조화 반환" 추가** — 워크플로우 schema 기반 타입 안전 전달을 v2 권장 기본으로
+- **워크플로우 기반 A/B 테스트** — 스킬 검증(with/without)을 워크플로우 스크립트로 구성하는 레시피
+- **에이전트 정의 확장** — 프론트매터 `tools`(읽기 전용 리뷰어 등 도구 제한), `재호출 지침` 섹션 표준화
 
 ### Changed
-- **§5-4 CLAUDE.md 포인터를 두 자리로 분리** — (a) 하네스 홈 `{harness}/CLAUDE.md`는 구축 시 1회, (b) 출력 프로젝트 폴더 `{출력 경로}/CLAUDE.md`는 **실행마다**. 종전 §5-4는 "하네스 구축 시 1회"의 절차로만 쓰여 있어, 실행마다 출력 폴더가 달라지는 하네스에서 새 폴더에 포인터가 남지 않았다(rapid-learner 실측). (b)는 절차가 아니라 오케스트레이터 훅으로 박는다 — 시작 Phase에 확인/개설, 최종 보고 Phase에 변경 이력 한 줄 (SKILL.md §5-4, `references/orchestrator-template.md` 템플릿 A·B·C + 작성 원칙 9)
-- **원본 포인터에 `$HARNESS_ROOT` 표기 도입** — 사본이 된 `.claude/`가 원본을 되짚을 수 있도록 출력 폴더 CLAUDE.md에 `**원본:** $HARNESS_ROOT/{harness}/`를 적는다. 경로를 리터럴로 박으면 원본이 옮겨지는 순간 거짓이 되므로 환경변수로 가리키고, 미설정이면 추측하지 말고 사용자에게 묻는다 (SKILL.md §5-4)
 
-### Changed (분량)
-- **Phase 7(하네스 진화)을 `references/harness-evolution.md`로 분리** — 위 추가분으로 SKILL.md가 538줄이 되어 스킬 자신이 규정한 500줄 상한(§4-4)을 어겼다. Phase 7은 실행 후·유지보수 시점에만 필요한 조건부 내용이므로 분리 1순위다. 본문에는 7-1~7-5 요약표와 "언제 이 파일을 읽으라"는 포인터를 남겼고 절 번호는 그대로 유지했다(외부에서 "메타스킬 7-3"으로 참조 중). 485줄
+- **6패턴 각각에 v2 권장 실행 모드 매핑** — 팬아웃/파이프라인은 워크플로우 1순위, 감독자는 퍼시스턴트+태스크, 계층 위임은 워크플로우 1단계 중첩 등
+- **오케스트레이터 템플릿 3종 전면 재작성** — A: 워크플로우(정찰→실행→종합, run_meta/resume 포함), B: 퍼시스턴트(스폰+태스크+피드백 루프), C: 서브에이전트
+- **Phase 7 재구성** — 운영/유지보수는 harness 스킬에 유지, 진화(피드백 반영)는 evolve 스킬로 분리
+- 산출물 체크리스트에 v1 잔재 검증·워크플로우 함정 검증 항목 추가
+- `references/agent-design-patterns.md` → `team-patterns.md`로 개편 (품질 패턴 흡수), `team-examples.md` 5종 예시를 v2 문법으로 재작성
 
-### Docs
-- `references/skill-writing-guide.md` 목차에 §9 누락분 추가
+### Removed
 
----
-
-## [1.3.3] - 2026-09-01
-
-### Added
-- **오케스트레이터 템플릿에 스펙 훅 내장** — 템플릿 A(Phase 0 / Phase 5)·B(Phase 0 / Phase 4)·C(하이브리드)에 "스펙 개설/귀속"과 "완료 기록 → Done → index 갱신"을 명시하고, 작성 원칙 8번으로 승격. 종전에는 SKILL.md §5-6의 산문 지시로만 존재해 하네스 생성자가 훅을 빠뜨리거나 옛 경로로 심어도 걸러지지 않았다 — 1.3.2의 경로 이관이 반쪽으로 끝난 원인과 같은 자리다 (`references/orchestrator-template.md`, SKILL.md §5-6)
-
----
-
-## [1.3.2] - 2026-09-01
-
-### Changed
-- **스펙 디렉토리를 프로젝트 폴더 최상위 `specs/`로 변경** (기존 `.{하네스명}/specs/`) — 한 프로젝트 폴더가 하네스를 여럿 쓸 때 ① 각 하네스가 001부터 세어 번호가 충돌하고 ② 하네스 경계를 넘는 작업이 어느 대장에도 온전히 속하지 못하는 문제가 실제로 발생했다. 대장·번호 수열은 프로젝트당 하나로 두고, 하네스 구분은 대장의 「하네스」 컬럼이 맡는다. 이미 `specs/`가 있으면 다음 번호를 이어 쓴다 (`references/spec-tracking.md`, SKILL.md §5-6, §6-1 검증 항목)
-
-### Added
-- 신규 에이전트/스킬 생성 전 중복 검토 단계 (Phase 3-0, Phase 4-0)
-- `references/agent-design-patterns.md` "에이전트 재사용 설계" 섹션
-- `references/skill-writing-guide.md` §9 "스킬 재사용 설계"
-
-### Changed (재사용 설계)
-- Phase 선택 매트릭스에 3-0/4-0 명시
-- Phase 2-3에 재사용 검토 단계 포인터 추가
-- 산출물 체크리스트에 재사용 검토 항목 2개 추가
-
----
-
-## [1.3.1] - 2026-08-09
-
-### Docs
-- `references/spec-tracking.md`에 "Spec Kit 단계 대응"(constitution~converge ↔ 하네스 Phase 분담표)과 "게이트 규칙"(Draft 합의·Superseded 사전 확인) 추가 — 스펙과 파이프라인의 역할 경계 명문화
-
-## [1.3.0] - 2026-08-09 (shqkel/harness 포크)
-
-### Added
-- **스펙 추적 규격 내장** — 신규 하네스 생성 시 `.{하네스명}/specs/` 실행 이력 관리(스펙 문서·index 대장·시작/최종 보고 Phase 훅)를 자동 포함 (SKILL.md §5-6, §6-1 검증 항목, `references/spec-tracking.md` 신규)
-
-### Changed
-- **내부 산출물 폴더 관례 `_workspace/` → `.<하네스명>/`** — 하네스별 hidden 폴더로 전환해 여러 하네스가 한 작업 디렉토리에서 충돌 없이 공존 (SKILL.md, orchestrator-template, skill-testing-guide, team-examples, agent-design-patterns)
+- **마케팅/사이트 자산 제거** — `harness_banner.png`·`harness_icon.png`·`harness_social.png`·`harness_team.png`(합계 약 9MB), `index.html`(랜딩 페이지), `privacy.html`
+- **저장소 운영 부산물 제거** — 런치 캠페인용 `_workspace/` 산출물, 마케팅 에이전트 정의(`.claude/agents/launch-strategist` 등), `docs/experimental-dependency.md`
+- README_JA (일본어 README) — 유지보수 부담 대비 효용 저조. EN/KO 2종 유지
 
 ## [1.2.1] - 2026-04-18
 
