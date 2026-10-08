@@ -15,7 +15,7 @@
 
 ```markdown
 ---
-name: {domain}-orchestrator
+name: {harness}          # 진입 스킬 — 이름 규칙은 SKILL.md 2-4
 description: "{도메인} 워크플로를 조율한다. 사용자가 {초기 실행 키워드} 중 하나로 요청하면 사용하며, {도메인} 결과 수정, 부분 재실행, 업데이트, 보완, 다시 실행, 이전 결과 개선 같은 후속 작업에도 사용한다."
 ---
 
@@ -59,7 +59,7 @@ Workflow 사용에 동의한 것으로 본다. 기본 에이전트 수는 {N}명
 
 Workflow 도구에 다음 스크립트를 전달한다. 자세한 예시는 harness 스킬의 `workflow-recipes.md`에서 확인한다.
 
-- `meta`: `name`은 '{domain}-run', `phases`는 [{수집}, {검증}, {종합}]
+- `meta`: `name`은 '{harness}-run', `phases`는 [{수집}, {검증}, {종합}]
 - 수집: pipeline(args.items, item => agent(..., {schema: COLLECT}))
 - 검증: 찾은 항목마다 적대적 검증 → .filter(Boolean) → 검증을 통과한 항목만 다음 단계로 전달
 - 종합: 구조화된 결과를 return
@@ -104,7 +104,7 @@ Workflow 도구에 다음 스크립트를 전달한다. 자세한 예시는 harn
 
 ```markdown
 ---
-name: {domain}-orchestrator
+name: {harness}          # 진입 스킬 — 이름 규칙은 SKILL.md 2-4
 description: "{도메인} 에이전트의 협업을 조율한다. 사용자가 {초기 실행 키워드} 중 하나로 요청하면 사용하며, 수정, 부분 재실행, 업데이트, 보완, 다시 실행, 이전 결과 개선 같은 후속 작업에도 사용한다."
 ---
 
@@ -215,7 +215,7 @@ v1처럼 명시적인 팀 객체를 만들지 않는다. 세션에서 이름을 
 
 ```markdown
 ---
-name: {domain}-orchestrator
+name: {harness}          # 진입 스킬 — 이름 규칙은 SKILL.md 2-4
 description: "{도메인}의 독립 작업을 서브에이전트에 위임한다. 사용자가 {초기 실행 키워드} 중 하나로 요청하면 사용하며, 결과 수정, 부분 재실행, 업데이트, 보완, 다시 실행, 이전 결과 개선 같은 후속 작업에도 사용한다."
 ---
 

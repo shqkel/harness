@@ -186,7 +186,7 @@ while (budget.total && budget.remaining() > 50_000) {
 
 ## 6. 사용자 정의 유형 + 구조화 출력
 
-하네스가 만든 `.claude/agents/{name}.md` 정의를 워크플로에서 그대로 사용한다.
+하네스가 만든 `.claude/agents/{harness}-{role}.md` 정의를 워크플로에서 그대로 사용한다.
 
 ```javascript
 const r = await agent(

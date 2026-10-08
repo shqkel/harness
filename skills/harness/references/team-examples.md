@@ -145,7 +145,7 @@ return { confirmed }
 
 ## 산출물 저장 방식
 
-- **에이전트 정의:** `프로젝트/.claude/agents/{name}.md`에 만든다. 핵심 역할, 작업 원칙, 입력·출력 규칙, 재호출 방법, 오류 처리, 협업 방법을 반드시 적는다. 지속형 에이전트에는 통신 규칙을, 워크플로에서 쓸 에이전트에는 구조화 출력 형식을 추가한다.
-- **스킬:** `프로젝트/.claude/skills/{name}/SKILL.md`에 만들고, 필요하면 `references/`와 `scripts/`를 둔다.
+- **에이전트 정의:** `프로젝트/.claude/agents/{harness}-{role}.md`에 만든다(이름 규칙은 SKILL.md 2-4). 핵심 역할, 작업 원칙, 입력·출력 규칙, 재호출 방법, 오류 처리, 협업 방법을 반드시 적는다. 지속형 에이전트에는 통신 규칙을, 워크플로에서 쓸 에이전트에는 구조화 출력 형식을 추가한다.
+- **스킬:** `프로젝트/.claude/skills/{harness}.{action}/SKILL.md`(진입 스킬은 `{harness}/SKILL.md`)에 만들고, 필요하면 `references/`와 `scripts/`를 둔다.
 - **오케스트레이터:** 실행 모드를 반드시 적는다. `orchestrator-template.md`의 템플릿을 사용한다.
 - **중간 산출물:** `.{harness}/{phase}_{agent}_{artifact}.{ext}` 형식으로 저장하고 검증이 끝난 뒤에도 남긴다.
