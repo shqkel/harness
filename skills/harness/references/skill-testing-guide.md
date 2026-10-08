@@ -64,8 +64,8 @@
 
 테스트 프롬프트마다 서브에이전트 두 명을 한 메시지에서 **동시에 실행**한다.
 
-- **스킬 적용 실행(With-skill)**: 스킬을 읽은 뒤 작업하고 결과를 `_workspace/iteration-N/eval-{id}/with_skill/outputs/`에 저장한다.
-- **기준 실행(Baseline)**: 같은 프롬프트를 스킬 없이 처리하고 결과를 `_workspace/iteration-N/eval-{id}/without_skill/outputs/`에 저장한다.
+- **스킬 적용 실행(With-skill)**: 스킬을 읽은 뒤 작업하고 결과를 `.{harness}/iteration-N/eval-{id}/with_skill/outputs/`에 저장한다.
+- **기준 실행(Baseline)**: 같은 프롬프트를 스킬 없이 처리하고 결과를 `.{harness}/iteration-N/eval-{id}/without_skill/outputs/`에 저장한다.
 
 ### 3-2. 기준 실행을 정하는 방법
 
@@ -251,7 +251,7 @@ return { results: mapped }
 ## 9. 테스트 작업 디렉터리 구조
 
 ```
-_workspace/
+.{harness}/
 ├── iteration-1/
 │   ├── eval-descriptive-name/
 │   │   ├── eval_metadata.json
@@ -267,4 +267,4 @@ _workspace/
 
 - `eval` 디렉터리에는 번호 대신 내용을 알 수 있는 이름을 붙인다(예: `eval-multi-page-table-extraction`).
 - 반복 회차마다 독립된 디렉터리를 만들고, 이전 `iteration` 디렉터리를 덮어쓰지 않는다.
-- 사후 검증과 변경 이력 추적에 필요하므로 `_workspace/`는 삭제하지 않는다.
+- 사후 검증과 변경 이력 추적에 필요하므로 `.{harness}/`는 삭제하지 않는다.

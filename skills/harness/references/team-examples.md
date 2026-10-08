@@ -39,7 +39,7 @@
                    worldbuilder에 조정 요청
                  이전 맥락이 남아 있으므로 "아까 정한 계급 구조에서
                  상인 계층만 수정"처럼 일부만 고치라고 지시할 수 있다.
-2단계(서브에이전트): prose-stylist 한 번 호출 → _workspace/에 저장된 산출물 세 개를 읽고 집필
+2단계(서브에이전트): prose-stylist 한 번 호출 → .{harness}/에 저장된 산출물 세 개를 읽고 집필
 3단계(서브에이전트 병렬): science-consultant + continuity-manager가 각각 검토
 4단계(지속형 에이전트): 한 번만 호출한 prose-stylist에는 SendMessage를 보낼 수 없다.
                  2단계에서 name을 붙여 실행했다면 검토 결과를 반영하라고 지시할 수 있다.
@@ -131,9 +131,9 @@ return { confirmed }
 **선택 이유:** 생성자 한 명과 검토자 한 명만 필요하다. 검토 결과를 생성자에게 최대 두 번 돌려보내면 되므로 가벼운 혼합 모드로 충분하다.
 
 ```
-1단계: Agent(name: "artist") → 패널 생성 → _workspace/panels/
+1단계: Agent(name: "artist") → 패널 생성 → .{harness}/panels/
 2단계: Agent(subagent_type: "webtoon-reviewer", prompt: "패널을 검토하라") 한 번 호출 → PASS/FIX/REDO 판정
-       → _workspace/review_report.md
+       → .{harness}/review_report.md
 3단계: REDO 판정을 받은 패널만 SendMessage({to: "artist"})로 재생성 지시
        최대 두 번 반복한다. artist가 이전 맥락을 기억하므로
        "3번 패널의 구도만 수정"처럼 범위를 좁혀 지시할 수 있다.
@@ -148,4 +148,4 @@ return { confirmed }
 - **에이전트 정의:** `프로젝트/.claude/agents/{name}.md`에 만든다. 핵심 역할, 작업 원칙, 입력·출력 규칙, 재호출 방법, 오류 처리, 협업 방법을 반드시 적는다. 지속형 에이전트에는 통신 규칙을, 워크플로에서 쓸 에이전트에는 구조화 출력 형식을 추가한다.
 - **스킬:** `프로젝트/.claude/skills/{name}/SKILL.md`에 만들고, 필요하면 `references/`와 `scripts/`를 둔다.
 - **오케스트레이터:** 실행 모드를 반드시 적는다. `orchestrator-template.md`의 템플릿을 사용한다.
-- **중간 산출물:** `_workspace/{phase}_{agent}_{artifact}.{ext}` 형식으로 저장하고 검증이 끝난 뒤에도 남긴다.
+- **중간 산출물:** `.{harness}/{phase}_{agent}_{artifact}.{ext}` 형식으로 저장하고 검증이 끝난 뒤에도 남긴다.

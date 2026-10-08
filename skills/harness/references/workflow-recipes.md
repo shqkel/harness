@@ -190,7 +190,7 @@ while (budget.total && budget.remaining() > 50_000) {
 
 ```javascript
 const r = await agent(
-  `_workspace/02_draft.md 파일을 검증하고 발견한 항목을 반환하라`,
+  `.{harness}/02_draft.md 파일을 검증하고 발견한 항목을 반환하라`,
   { agentType: 'qa-inspector',      // .claude/agents/qa-inspector.md
     schema: FINDINGS,               // 사용자 정의 유형도 지정한 스키마에 맞는 결과만 반환
     effort: 'high' })               // 검증 단계에서는 추론 강도를 높이는 것이 좋다
