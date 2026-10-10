@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0%20(fork)-brightgreen.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.1.0%20(fork)-brightgreen.svg" alt="Version">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-purple.svg" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/Execution_Modes-3-teal.svg" alt="3 Execution Modes">
@@ -120,12 +120,12 @@ A controlled A/B on 15 software-engineering tasks measured the effect of structu
 
 ## Fork changes — what this fork adds
 
-**Upstream:** [revfactory/harness](https://github.com/revfactory/harness) v2.1.0 (`main` @ `92d9f1b`, 2026-09-28) · **This fork:** v2.0.0 · Full history in [CHANGELOG.md](CHANGELOG.md) (Korean).
+**Upstream:** [revfactory/harness](https://github.com/revfactory/harness) v2.1.0 (`main` @ `92d9f1b`, 2026-09-28) · **This fork:** v2.1.0 · Full history in [CHANGELOG.md](CHANGELOG.md) (Korean).
 
 This fork keeps its own version line. Fork v2.0.0 merges upstream v2.1.0 and re-ports the fork's conventions onto the v2 structure; the execution engine (three execution modes, quality patterns, model tiers, `harness:evolve`) is upstream as-is.
 
 1. **Spec tracking** (`references/spec-tracking.md`, SKILL.md 0-1 / 5-6) — numbered specs in a project-level `specs/` ledger; hooks at the start and end of every orchestrator template (outside the script in Workflow mode); applied to the harness build itself.
-2. **Naming convention** (SKILL.md 2-4) — agents `{harness}-{role}.md`, entry skill `{harness}/`, other skills `{harness}.{action}/`, uppercase `SKILL.md`, no abbreviated prefixes; frontmatter `name` must match the file name or `subagent_type` calls fall back to `general-purpose`.
+2. **Naming convention** (SKILL.md 2-4) — agents `{harness}_{role}.md` (underscore separates harness from role; skills use `.`), entry skill `{harness}/`, other skills `{harness}.{action}/`, uppercase `SKILL.md`, no abbreviated prefixes; frontmatter `name` must match the file name or `subagent_type` calls fall back to `general-purpose`.
 3. **Two `CLAUDE.md` pointers + `$HARNESS_ROOT`** (SKILL.md 5-4, `references/claude-md-pointer.md`) — harness home (once) and output project folder (every run, as an orchestrator hook).
 4. **Intermediate folder `.{harness}/`** instead of the shared `_workspace/` (all 41 occurrences).
 5. **Numbered stage 7** (7-1 to 7-5) so external references such as "meta-skill 7-3" keep resolving.

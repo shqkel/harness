@@ -114,8 +114,8 @@ Harness v2는 Claude Code의 멀티에이전트 기능 세 가지를 사용한�
 | 대상 | 패턴 | 예시 |
 | --- | --- | --- |
 | 하네스 폴더 | `{harness}/` | `rapid-learner/` |
-| 에이전트 파일 | `{harness}-{role}.md` | `rapid-learner-curriculum-planner.md` |
-| 에이전트 프론트매터 `name` | `{harness}-{role}` | `rapid-learner-curriculum-planner` |
+| 에이전트 파일 | `{harness}_{role}.md` | `rapid-learner_curriculum-planner.md` |
+| 에이전트 프론트매터 `name` | `{harness}_{role}` | `rapid-learner_curriculum-planner` |
 | 진입 스킬 폴더 | `{harness}/` | `rapid-learner/` |
 | 그 밖의 스킬 폴더 | `{harness}.{action}/` | `rapid-learner.review/` |
 | 스킬 프론트매터 `name` | 폴더 이름과 같게 | `rapid-learner`, `rapid-learner.review` |
@@ -124,6 +124,7 @@ Harness v2는 Claude Code의 멀티에이전트 기능 세 가지를 사용한�
 | 중간 산출물 폴더 | `.{harness}/` | `.rapid-learner/`(5-1) |
 
 - `{harness}`, `{role}`, `{action}`은 모두 **kebab-case 소문자 영문**이다. `{role}`은 역할(`slide-writer`, `material-reviewer`), `{action}`은 동작(`orchestrate`, `design`, `build`)으로 짓는다.
+- **구분자로 종류와 소속을 가른다.** 에이전트는 `_`, 스킬은 `.`이다. 하네스 이름 자체에 하이픈이 들어가므로(`case-study-to-channels`) 하이픈으로 이으면 `case-study-to-channels-publish-naver`에서 어디까지가 하네스인지 이름만으로는 알 수 없다. `_`·`.` 앞이 하네스, 뒤가 역할·동작이다 — `curriculum-builder_designer`는 curriculum-builder의 에이전트, `curriculum-builder.design`은 그 스킬이다.
 - **접두사를 약어로 줄이지 않는다.** `case-study-to-channels`를 `cs-writer`처럼 줄이면 접두사로 소속을 알아보려던 목적이 사라지고, 다른 하네스의 약어와 다시 부딪친다.
 - `{harness}/`(`.{action}` 없음)는 **진입 스킬**, 곧 사용자가 직접 부르는 오케스트레이터의 이름이다. 스킬이 하나뿐이면 그것이 진입 스킬이다. 여럿이면 진입 스킬 하나만 `{harness}/`를 갖고 나머지는 `{harness}.{action}/`을 쓴다. 이미 접두사가 붙어 있으므로 부딪치지 않는다.
 - 에이전트 프론트매터 `name`은 `subagent_type`·`agentType`으로 부를 때 쓰는 이름이므로 **파일 이름과 반드시 같게** 둔다. 다르면 이름으로 호출이 되지 않아 `general-purpose`로 우회하게 되고, 그러면 정의 파일의 `model`·`tools`가 적용되지 않는다.
@@ -132,9 +133,9 @@ Harness v2는 Claude Code의 멀티에이전트 기능 세 가지를 사용한�
 
 ### 3단계: 에이전트 정의 작성
 
-여러 세션에서 재사용할 전문 에이전트는 `프로젝트/.claude/agents/{harness}-{role}.md` 파일로 정의한다(이름 규칙은 2-4). 반복해서 사용할 역할을 `Agent` 도구의 `prompt`에만 직접 넣지 않는다.
+여러 세션에서 재사용할 전문 에이전트는 `프로젝트/.claude/agents/{harness}_{role}.md` 파일로 정의한다(이름 규칙은 2-4). 반복해서 사용할 역할을 `Agent` 도구의 `prompt`에만 직접 넣지 않는다.
 
-- 파일로 정의해야 다음 세션에서도 재사용할 수 있다. `Agent` 도구에서는 `subagent_type: "{harness}-{role}"`, `Workflow`에서는 `agentType: "{harness}-{role}"`으로 부른다.
+- 파일로 정의해야 다음 세션에서도 재사용할 수 있다. `Agent` 도구에서는 `subagent_type: "{harness}_{role}"`, `Workflow`에서는 `agentType: "{harness}_{role}"`으로 부른다.
 - 에이전트가 주고받을 내용을 미리 정해야 협업 결과가 안정적이다.
 - 에이전트에는 누가 일하는지를, 스킬에는 그 일을 어떻게 하는지를 적어 서로 섞이지 않게 한다.
 
@@ -428,7 +429,7 @@ Claude는 스킬의 `name`과 `description`을 보고 어떤 스킬을 불러올
 
 - [ ] `프로젝트/.claude/agents/`에 재사용할 모든 사용자 정의 유형의 파일을 만들었다. 단발 작업에 기본 제공 유형을 그대로 쓰는 경우는 제외했다.
 - [ ] `프로젝트/.claude/skills/`에 필요한 `SKILL.md`와 참조 문서를 만들었다.
-- [ ] 명명 규칙을 지켰다. 에이전트 `{harness}-{role}.md`, 진입 스킬 `{harness}/`, 나머지 스킬 `{harness}.{action}/`, 중간 산출물 `.{harness}/`(2-4).
+- [ ] 명명 규칙을 지켰다. 에이전트 `{harness}_{role}.md`, 진입 스킬 `{harness}/`, 나머지 스킬 `{harness}.{action}/`, 중간 산출물 `.{harness}/`(2-4).
 - [ ] 오케스트레이터 스킬 한 개에 데이터 전달 방법, 오류 처리, 테스트 시나리오를 넣었다.
 - [ ] 워크플로 조율, 지속형 에이전트, 서브에이전트 가운데 사용할 실행 모드를 적었다. 혼합 모드라면 단계마다 표시했다.
 - [ ] 에이전트별 `model:`을 복잡도, 작업 기간, 자율성, 응답 속도에 따라 골랐고 이유를 주석으로 남겼다. 모든 에이전트에 같은 고성능 모델을 일괄 지정하지 않았다.

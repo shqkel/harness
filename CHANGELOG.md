@@ -6,6 +6,13 @@
 
 ---
 
+## [2.1.0] - 2026-10-10
+
+### Changed
+- **명명 규칙 2-4 — 에이전트 구분자 `-` → `_`.** 에이전트는 `{harness}_{role}.md`(프론트매터 `name` 동일), 스킬은 그대로 `{harness}.{action}/`. 하네스 이름 자체에 하이픈이 있어(`case-study-to-channels`) `{harness}-{role}`로는 이름만 봐서 어디까지가 하네스인지 알 수 없었다. 이제 `_`·`.` 앞이 하네스이고, 구분자로 에이전트(`_`)와 스킬(`.`)도 갈린다. `subagent_type`·`agentType` 예시와 `team-patterns.md`·`team-examples.md`·`workflow-recipes.md` 템플릿을 함께 바꿨다. Claude Code 가 밑줄 이름을 등록·호출하고 세션 기록에 그대로 남기는 것을 실측했다.
+
+---
+
 ## [2.0.0] - 2026-10-08
 
 원본 [revfactory/harness](https://github.com/revfactory/harness) **v2.1.0을 병합**하고, 포크 1.3.0~1.4.2의 기능을 v2 구조에 다시 옮겼다. 포크 커밋은 v1 본문 기준 diff라 줄 단위로 얹지 않고 재작성했다. 이 포크의 버전은 원본과 따로 센다. 원본이 바꾼 내용은 아래 「상류 이력」의 [2.1.0] (상류)·[2.0.0] (상류)를 본다.

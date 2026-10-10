@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0%20(fork)-brightgreen.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.1.0%20(fork)-brightgreen.svg" alt="Version">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-purple.svg" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/실행모드-3종-teal.svg" alt="3 Execution Modes">
@@ -120,7 +120,7 @@ cp -r skills/evolve ~/.claude/skills/harness-evolve
 
 ## 포크 변경사항 — 원본 대비 무엇을 더했나
 
-**원본:** [revfactory/harness](https://github.com/revfactory/harness) v2.1.0 (`main` @ `92d9f1b`, 2026-09-28) · **이 포크:** v2.0.0 · 전체 이력은 [CHANGELOG.md](CHANGELOG.md).
+**원본:** [revfactory/harness](https://github.com/revfactory/harness) v2.1.0 (`main` @ `92d9f1b`, 2026-09-28) · **이 포크:** v2.1.0 · 전체 이력은 [CHANGELOG.md](CHANGELOG.md).
 
 이 포크의 버전은 원본과 따로 센다. 포크 v1.3.0~v1.4.2는 원본 v1.2.0 위에 쌓은 것이고, 포크 v2.0.0은 원본 v2.1.0을 병합한 뒤 그 기능을 v2 구조에 다시 옮긴 것이다. 실행 엔진(3중 실행 모드·품질 패턴·모델 티어·`harness:evolve`)은 원본 그대로다.
 
@@ -134,7 +134,7 @@ cp -r skills/evolve ~/.claude/skills/harness-evolve
 
 ### 2. 명명 규칙 (SKILL.md 2-4)
 
-에이전트 `{harness}-{role}.md`, 진입 스킬 `{harness}/`, 나머지 스킬 `{harness}.{action}/`, 정의 파일은 대문자 `SKILL.md`. 접두사 약어는 금지한다. 프론트매터 `name`을 파일 이름과 다르게 두면 `subagent_type`으로 호출되지 않아 `general-purpose`로 우회하게 되고, 정의 파일의 `model`·`tools`가 적용되지 않는다.
+에이전트 `{harness}_{role}.md`(하네스와 역할을 `_`로 가른다 — 스킬은 `.`), 진입 스킬 `{harness}/`, 나머지 스킬 `{harness}.{action}/`, 정의 파일은 대문자 `SKILL.md`. 접두사 약어는 금지한다. 프론트매터 `name`을 파일 이름과 다르게 두면 `subagent_type`으로 호출되지 않아 `general-purpose`로 우회하게 되고, 정의 파일의 `model`·`tools`가 적용되지 않는다.
 
 ### 3. `CLAUDE.md` 연결 정보 두 곳과 `$HARNESS_ROOT` (SKILL.md 5-4 · `references/claude-md-pointer.md`)
 
