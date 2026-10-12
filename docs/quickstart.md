@@ -19,10 +19,10 @@
 ## Step 2 — 플러그인 설치 (30초)
 
 ```
-/plugin install harness@harness-marketplace
+/plugin install sharness@sharness-marketplace
 ```
 
-**실패 FAQ — 설치가 안 보임:** `/plugin list`로 확인. 없으면 Step 1부터 재실행, 있는데 비활성이면 `/plugin enable harness@harness-marketplace`.
+**실패 FAQ — 설치가 안 보임:** `/plugin list`로 확인. 없으면 Step 1부터 재실행, 있는데 비활성이면 `/plugin enable sharness@sharness-marketplace`.
 
 ## Step 3 — 한 문장으로 하네스 생성 (2분)
 
@@ -61,5 +61,5 @@ claude "Ticket FIN-427: 신규 법인 고객(중견 제조사, 매출 $80M, 한�
 
 ## 다음 단계
 
-- 결과가 아쉬우면: `"하네스 회고해줘"` → `/harness:evolve`가 피드백을 일반화해 반영
+- 결과가 아쉬우면: `"하네스 회고해줘"` → `/sharness:evolve`가 피드백을 일반화해 반영
 - v1 하네스가 있는 프로젝트면: `"하네스 점검해줘"` → 마이그레이션 자동 제안 ([migration-v1-to-v2.md](migration-v1-to-v2.md))

@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-10-12
+
+### Changed
+- **플러그인 이름 `harness` → `sharness`, 마켓플레이스 이름 `harness-marketplace` → `sharness-marketplace`.** 원본 revfactory/harness 와 이름이 같아 한 PC에 둘을 함께 등록할 수 없었다(마켓플레이스는 이름으로 구분되고, 설치 ID `harness@harness-marketplace` 와 호출 이름 `/harness:harness` 도 겹친다). 이제 원본은 `/harness:harness`·`/harness:evolve`, 이 포크는 `/sharness:harness`·`/sharness:evolve` 로 갈린다. 설치는 `/plugin marketplace add shqkel/harness` → `/plugin install sharness@sharness-marketplace`.
+- 스킬 description 앞머리에 `sharness(shqkel/harness 포크)` 를 붙였다. 두 플러그인의 호출 문구가 같아 말로만 요청하면 어느 쪽이 불릴지 정해지지 않으므로, 구분이 필요하면 "sharness로 …" 또는 슬래시 명령으로 부른다.
+
 ---
 
 ## [2.1.0] - 2026-10-10
